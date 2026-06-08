@@ -19,8 +19,15 @@ async function connectDB(){
         // create the URL db and the collection
         const db2 = MongoClient.db("URLs")
         const ub = db2.collection("URLs")
+        // create the Analytics db and the collection
+        const db3 = MongoClient.db("Analytics")
+        const ab = db3.collection("Analytics")
+        //check whether the parameters exist else create
+        let param1 = await ab.findOne({param: "genCount"})
+        let param2 = await ab.findOne({param: "accessCount"})
         // Create the TTL index
         await ub.createIndex({expiresAt: 1},{expireAfterSeconds: 0})
+        // Create the HTTP Server
         http.createServer((req,res)=>{
             const method = req.method
             const url = req.url
@@ -78,6 +85,8 @@ async function connectDB(){
                         idVal: indexVal,
                         clickCount: 0
                     })
+                    // Update anaytics genCount : Increment by +1
+                    await ab.updateOne({param:"genCount"},{$inc: {count: 1}},{upsert: true})
                     let result = process.env.FINAL_URL_TEMPLATE+indexVal
                     res.writeHead(200, {'Content-Type':'text/plain'})
                     res.end(result)
