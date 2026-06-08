@@ -1,0 +1,77 @@
+body, span, h1, h2, h3, h4, h5, h6, p, ul, ol{
+    line-height: 1.5;
+}
+
+body{
+    font-family: monospace;
+    .title{
+        font-size: 24px;
+        font-family: monospace;
+        padding: 10px;
+    }
+    .tools{
+        font-size: 18px;
+        padding: 10px;
+        margin: 10px;
+        font-family: monospace;
+        height: 65px;
+        width: 100px;
+        text-decoration: none;
+        color: black;
+    }
+    .inputObj{
+        resize: none;
+        font-family: monospace;
+        font-size: 14px;
+        padding: 5px;
+        margin: 5px;
+        color:blue;
+        width: 90%;
+    }
+    .actionObj{
+        font-family: monospace;
+        font-size: 14px;
+        padding: 5px;
+        margin: 5px;
+    }
+    .field{
+        width:97%;
+        flex:1;
+        border: 1px solid black;
+        margin: 5px;
+        padding: 5px;
+    }
+    .container{
+        display: flex;
+        flex-direction: row;
+    }
+    .heading{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    .head{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .secHead{
+        font-family: monospace;
+        font-size: 16px;
+        text-align: center;
+    }
+    .entryObj{
+        resize: none;
+        font-family: monospace;
+        font-size: 14px;
+        padding: 5px;
+        margin: 5px;
+        color:blue;
+        width: 90%;
+    }
+    /*Media query - To fit the mobile view as well*/
+    @media (max-width: 768px){
+        .container{
+            flex-direction: column;
+        }
+    }
+}

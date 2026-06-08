@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="head">
+        <span class="title">URL Shortener - Home Page</span>
+        <div style="display: flex; justify-content: flex-end">
+            <button class="tools" id="help" onclick="window.location.href='/help';">Help</button>
+        </div>
+    </div>
+    <hr class="line">
+    <div class="container">
+        <div class="field">
+            <div class="secHead">
+                <span class="heading">Generate URL</span>
+            </div>
+            <hr class="line">
+            <form method="POST" onsubmit="sendURL(event)">
+                <label for="urlBox">Enter the URL that you want to shorten (max 1000 characters)
+                    <span style="color:red">*</span>
+                </label>
+                <br>
+                <textarea class="inputObj" id="urlInput" rows="11" cols="40"
+                    placeholder="Enter the URL that you want to shorten here..." required
+                    name="urlBox" maxlength="1000"
+                    oninput = "if(this.value.length>1000){this.value = this.value.slice(0,1000)}"></textarea>
+                <br>
+                <label for="ttlBox">Enter the time for how long the generated URL should be accessible 
+                    (max time is 7 days 23 hours 59 minutes 59 seconds i.e., 07:23:59:59 
+                    if we write in the format of days:hours:minutes:seconds i.e., 691199 seconds is the 
+                    maximum lifetime of a generated shortened URL that can be set)
+                    <span style="color:red">*</span>
+                </label>
+                <input type="number" min="0" max="7" id="days" class="entryObj" placeholder="Days"
+                oninput="if(this.value>=7){this.value=7}else if(this.value<=0){this.value=0}
+                else{this.value = Math.round(this.value)}" required>
+                <br>
+                <input type="number" min="0" max="23" id="hours" class="entryObj" placeholder="Hours"
+                oninput="if(this.value>=23){this.value=23}else if(this.value<=0){this.value=0}
+                else{this.value = Math.round(this.value)}" required>
+                <br>
+                <input type="number" min="0" max="59" id="minutes" class="entryObj" placeholder="Minutes"
+                oninput="if(this.value>=59){this.value=59}else if(this.value<=0){this.value=0}
+                else{this.value = Math.round(this.value)}" required>
+                <br>
+                <input type="number" min="0" max="59" id="seconds" class="entryObj" placeholder="Seconds"
+                oninput="if(this.value>=59){this.value=59}else if(this.value<=0){this.value=0}
+                else{this.value = Math.round(this.value)}" required>
+                <br>
+                <button class="actionObj" id="generateURL">Generate Short URL</button>
+                <input type="reset" class="actionObj">
+            </form>
+            <hr class="line">
+            <label for="opBox">Get the Shortened URL below</label>
+            <br>
+            <textarea class="inputObj" id="urlOutput" rows="11" cols="40"
+                placeholder="Get the shortened URL here..." readonly
+                name="opBox"></textarea>
+            <br>
+            <button type="button" id="copyURLBtn" class="actionObj" onclick="copyURL()">Copy URL</button>
+        </div>
+
+        <div class="field">
+            <div class="secHead">
+                <span class="heading">Send Feedback</span>
+            </div>
+            <hr class="line">
+            <form method="POST" onsubmit = "sendFeedback(event)">
+                <label for="feedbackBox">Enter your valuable feedback (max 1000 characters)
+                    <span style="color:red">*</span>
+                </label>
+                <br>
+                <textarea class="inputObj" id="feedbackInput" rows="11" cols="40"
+                    placeholder="Enter the feedback here..." required
+                    name="feedbackBox" maxlength="1000"
+                    oninput = "if(this.value.length>1000){this.value = this.value.slice(0,1000)}"></textarea>
+                <br>
+                <button class="actionObj" id="sendFeedbackBtn">Send Feedback</button>
+                <input type="reset" class="actionObj">
+                <hr class="line">
+                <div class="secHead">
+                    <span class="heading">Links</span>
+                </div>
+                <hr class="line">
+                <span class="heading">See the source code: </span>
+                <button type="button" id="sourceCode" class="actionObj"
+                onclick="window.location.href='https://github.com/tharela-1/URL-Shortener'">Go to Source Code</button>
+                <br><br>
+                <span class="heading">By using this website you agree to the <a href="/help">Privacy Policy</a>, 
+                    <a href="/help">Terms of Service</a> and
+                    the <a href="/help">License Terms</a> of it.
+                </span>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
