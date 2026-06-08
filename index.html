@@ -13,6 +13,13 @@
             <button class="tools" id="help" onclick="window.location.href='/help';">Help</button>
         </div>
     </div>
+    <marquee style="font-size: 17px;">Thank you for using this website! 
+        Don't forget to give your valuable feedback to the developer!
+        By using this website you agree to the <a href="/help">Privacy Policy</a>, 
+        <a href="/help">Terms of Service</a> and
+        the <a href="/help">License Terms</a> of it.</marquee>
+    <marquee style="font-size: 17px;">The fields marked with <span style="color:red">*</span> 
+    are required fields in their respective sections.</marquee>
     <hr class="line">
     <div class="container">
         <div class="field">
@@ -22,6 +29,8 @@
             <hr class="line">
             <form method="POST" onsubmit="sendURL(event)">
                 <label for="urlBox">Enter the URL that you want to shorten (max 1000 characters)
+                    <br>
+                    <b>NOTE: URL ENTERED MUST START WITH https:// OTHERWISE THE GENERATED URL MAY NOT WORK.</b>
                     <span style="color:red">*</span>
                 </label>
                 <br>
