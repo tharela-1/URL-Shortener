@@ -68,6 +68,32 @@ body{
         color:blue;
         width: 90%;
     }
+    #generateURL:hover{
+        background-color: green;
+        color: white;
+    }
+    #sendFeedbackBtn:hover{
+        background-color: green;
+        color: white;
+    }
+    #reset1:hover{
+        background-color: red;
+        color: white;
+    }
+    #reset2:hover{
+        background-color: red;
+        color: white;
+    }
+    #copyURLBtn:hover{
+        background-color: yellow;
+    }
+    #sourceCode:hover{
+        background-color: purple;
+        color: white;
+    }
+    #backToHome:hover{
+        background-color: skyblue;
+    }
     /*Media query - To fit the mobile view as well*/
     @media (max-width: 768px){
         .container{

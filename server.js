@@ -5,8 +5,19 @@ const mongodb = require('mongodb')
 const querystring = require('querystring')
 require('dotenv').config()
 const MongoClient = new mongodb.MongoClient(process.env.MONGO_URI)
-function createBytes(){
-    return crypto.randomBytes(6).toString('hex')
+async function createBytes(){
+    const db4 = MongoClient.db("URLs")
+    const ab2 = db4.collection("URLs")
+    while(true){
+        let bytesURL = '/'+crypto.randomBytes(6).toString('hex')
+        let dbRecord = await ab2.findOne({idVal: bytesURL})
+        if(dbRecord){
+            continue
+        }
+        else{
+            return bytesURL
+        }
+    }
 }
 async function connectDB(){
     try{
@@ -27,11 +38,12 @@ async function connectDB(){
         let param2 = await ab.findOne({param: "accessCount"})
         // Create the TTL index
         await ub.createIndex({expiresAt: 1},{expireAfterSeconds: 0})
+        
         // Create the HTTP Server
-        http.createServer((req,res)=>{
+        http.createServer(async (req,res)=>{
             const method = req.method
             const url = req.url
-
+            // Check for the presence of the URL
             if(url==='/'){
                 res.statusCode = 301
                 res.setHeader('Location','/home')
@@ -77,7 +89,7 @@ async function connectDB(){
                     let realURL = decodeURIComponent(data.realURL)
                     let ttl = Number(data.ttl)
                     let expiresAt = new Date(Date.now()+(1000*ttl))
-                    let indexVal = createBytes()
+                    let indexVal = await createBytes()
                     await ub.insertOne({
                         realURL: realURL,
                         expireSeconds: ttl,
@@ -94,8 +106,21 @@ async function connectDB(){
                 
             }
             else{
-                res.writeHead(404, {'Content-Type':'text/html'})
-                fs.createReadStream('pageNotFound.html').pipe(res)
+                // if user accesses the url then do redirection else Page Not Found
+                let dbRecord = await ub.findOne({idVal: url})
+                if(dbRecord){
+                    // Update anaytics accessCount : Increment by +1
+                    await ab.updateOne({param:"accessCount"},{$inc: {count: 1}},{upsert: true})
+                    await ub.updateOne({idVal:url},{$inc: {clickCount: 1}})
+                    res.statusCode = 302
+                    res.setHeader('Location',dbRecord.realURL)
+                    return res.end()
+                }
+                else{
+                    res.writeHead(404, {'Content-Type':'text/html'})
+                    fs.createReadStream('pageNotFound.html').pipe(res)
+                }
+                
             }
         }).listen(process.env.PORT, '0.0.0.0', ()=>{
                 console.log("Server is listening")
