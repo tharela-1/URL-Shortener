@@ -1,6 +1,6 @@
 # URL-Shortener
 
-This is a URL Shortener website. This would be very helpful if we need to send a URL that is very long and use it for a short period of time and if we shorten it, it would be easier to send it.
+To implement a website to shorten a URL that is very long and use it for a short period of time so that it would be easier to send it and use it.
 
 Front End: HTML, CSS, JS  
 Back End: Node.js  
