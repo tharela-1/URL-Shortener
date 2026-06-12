@@ -5,6 +5,7 @@ const mongodb = require('mongodb')
 const querystring = require('querystring')
 require('dotenv').config()
 const MongoClient = new mongodb.MongoClient(process.env.MONGO_URI)
+
 async function createBytes(){
     const db4 = MongoClient.db("URLs")
     const ab2 = db4.collection("URLs")
@@ -72,11 +73,17 @@ async function connectDB(){
                 })
                 req.on("end",async()=>{
                     let data = querystring.parse(body)
-                    await fb.insertOne({
-                        feedback: decodeURIComponent(data.feedback)
-                    })
-                    res.writeHead(200,{'Content-Type':'text/plain'})
-                    res.end()
+                    if(data.feedback.length>1000 || data.feedback.length<0){
+                        res.writeHead(400,{'content-type':'text/plain'})
+                        res.end()
+                    }
+                    else{
+                        await fb.insertOne({
+                            feedback: data.feedback
+                        })
+                        res.writeHead(200,{'Content-Type':'text/plain'})
+                        res.end()
+                    }
                 })
             }
             else if(method==="POST" && url==='/sendURL'){
@@ -86,22 +93,28 @@ async function connectDB(){
                 })
                 req.on("end",async()=>{
                     let data = querystring.parse(body)
-                    let realURL = decodeURIComponent(data.realURL)
+                    let realURL = data.realURL
                     let ttl = Number(data.ttl)
-                    let expiresAt = new Date(Date.now()+(1000*ttl))
-                    let indexVal = await createBytes()
-                    await ub.insertOne({
-                        realURL: realURL,
-                        expireSeconds: ttl,
-                        expiresAt: expiresAt,
-                        idVal: indexVal,
-                        clickCount: 0
-                    })
-                    // Update anaytics genCount : Increment by +1
-                    await ab.updateOne({param:"genCount"},{$inc: {count: 1}},{upsert: true})
-                    let result = process.env.FINAL_URL_TEMPLATE+indexVal
-                    res.writeHead(200, {'Content-Type':'text/plain'})
-                    res.end(result)
+                    if(realURL.length>1000 || realURL.length<0 || ttl<0 || ttl>691199){
+                        res.writeHead(400,{'content-type':'text/plain'})
+                        res.end()
+                    }
+                    else{
+                        let expiresAt = new Date(Date.now()+(1000*ttl))
+                        let indexVal = await createBytes()
+                        await ub.insertOne({
+                            realURL: realURL,
+                            expireSeconds: Math.max(30,ttl),
+                            expiresAt: expiresAt,
+                            idVal: indexVal,
+                            clickCount: 0
+                        })
+                        // Update anaytics genCount : Increment by +1
+                        await ab.updateOne({param:"genCount"},{$inc: {count: 1}},{upsert: true})
+                        let result = process.env.FINAL_URL_TEMPLATE+indexVal
+                        res.writeHead(200, {'Content-Type':'text/plain'})
+                        res.end(result)
+                    }
                 })
                 
             }

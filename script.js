@@ -28,6 +28,12 @@ async function sendFeedback(event){
     if(response.ok){
         alert("Feedback sent successfully! Thank you for your valuable feedback!!")
     }
+    else if(response.status === 400){
+        alert("Error 400 - Bad Request")
+    }
+    else{
+        alert("Connection Error")
+    }
 }
 
 async function sendURL(event){
@@ -47,8 +53,14 @@ async function sendURL(event){
         },
         body: `realURL=${encodeURIComponent(realURL)}&ttl=${ttl}`
     })
-    resultURL.value = await response.text()
     if(response.ok){
+        resultURL.value = await response.text()
         alert("URL generated successfully!")
+    }
+    else if(response.status === 400){
+        alert("Error 400 - Bad Request")
+    }
+    else{
+        alert("Connection Error")
     }
 }
