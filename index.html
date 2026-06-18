@@ -40,11 +40,9 @@
                     oninput = "if(this.value.length>1000){this.value = this.value.slice(0,1000)}"></textarea>
                 <br>
                 <label for="ttlBox">Enter the time for how long the generated URL should be accessible 
-                    (max time is 7 days 23 hours 59 minutes 59 seconds i.e., 07:23:59:59 
-                    if we write in the format of days:hours:minutes:seconds i.e., 691199 seconds is the 
-                    maximum lifetime of a generated shortened URL that can be set)
+                    (max time to live - TTL is 7 days 23 hours 59 minutes 59 seconds)
                     <br>
-                    <b>NOTE: If you enter a TTL less than 30 seconds i.e., less than 0 days 0 hours 0 minutes 30 seconds, then
+                    <b>NOTE: If you enter a TTL less than 30 seconds, then
                         the TTL is set to 30 seconds.
                     </b>
                     <span style="color:red">*</span>
